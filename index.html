@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniVerse Team</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0c0c1d 0%, #1a1a3e 50%, #2d1b4e 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated stars background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+            pointer-events: none;
+        }
+
+        .star:nth-child(odd) {
+            animation-delay: 1.5s;
+        }
+
+        .floating-star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.6;
+            animation: float-around 15s linear infinite;
+        }
+
+        @keyframes float-around {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(100px, 50px) rotate(90deg);
+            }
+            50% {
+                transform: translate(50px, 100px) rotate(180deg);
+            }
+            75% {
+                transform: translate(-50px, 50px) rotate(270deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 8s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100px) rotate(360deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .logo-container {
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            width: 180px;
+            height: 180px;
+            border-radius: 15px;
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 0 40px rgba(79, 172, 254, 0.5);
+            animation: glow 2s ease-in-out infinite alternate;
+            transform: rotate(45deg);
+        }
+        
+        .logo img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            transform: rotate(-45deg);
+        }
+
+        @keyframes glow {
+            from { box-shadow: 0 0 40px rgba(79, 172, 254, 0.5); }
+            to { box-shadow: 0 0 60px rgba(79, 172, 254, 0.8); }
+        }
+
+        .main-title {
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #4facfe 0%, #00f2fe 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(79, 172, 254, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.8rem;
+            color: #b8c6db;
+            margin-bottom: 40px;
+            font-weight: 300;
+        }
+
+        /* Team grid */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            padding: 20px 0;
+        }
+
+        .team-member {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: card-float 4s ease-in-out infinite;
+        }
+
+        @keyframes card-float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+            100% { transform: translateY(0); }
+        }
+
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .team-member:hover::before {
+            left: 100%;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(79, 172, 254, 0.2);
+            border-color: rgba(79, 172, 254, 0.3);
+        }
+
+        .member-photo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            border: 3px solid transparent;
+            background: linear-gradient(45deg, #4facfe, #00f2fe) padding-box, 
+                        linear-gradient(45deg, #4facfe, #00f2fe) border-box;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .member-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
+        .member-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+
+        .member-role {
+            font-size: 1rem;
+            color: #b8c6db;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .member-qr {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .member-qr img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+            
+            .subtitle {
+                font-size: 1.4rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .team-member {
+                padding: 25px;
+                animation: card-float 4s ease-in-out infinite;
+            }
+        }
+
+        /* Shooting star animation */
+        .shooting-star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px white;
+            animation: shoot 3s linear infinite;
+        }
+
+        @keyframes shoot {
+            0% {
+                transform: translateX(-100px) translateY(-100px);
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px)) translateY(calc(100vh + 100px));
+                opacity: 0;
+            }
+        }
+
+        /* Planets */
+        .planet {
+            position: fixed;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.85;
+            z-index: 2;
+            animation: planet-float 30s linear infinite;
+        }
+        .planet.planet1 {
+            width: 40px; height: 40px;
+            background: radial-gradient(circle at 30% 30%, #ffe066 70%, #e1ad01 100%);
+            box-shadow: 0 0 30px 10px #ffe06644;
+            left: 10vw; top: 70vh;
+            animation-delay: 0s;
+        }
+        .planet.planet2 {
+            width: 30px; height: 30px;
+            background: radial-gradient(circle at 60% 40%, #6ec6ff 60%, #005fa3 100%);
+            box-shadow: 0 0 20px 6px #6ec6ff44;
+            left: 80vw; top: 20vh;
+            animation-delay: 10s;
+        }
+        .planet.planet3 {
+            width: 50px; height: 50px;
+            background: radial-gradient(circle at 50% 60%, #ff8c94 60%, #d72660 100%);
+            box-shadow: 0 0 40px 12px #ff8c9444;
+            left: 60vw; top: 80vh;
+            animation-delay: 20s;
+        }
+        .planet.planet4 {
+            width: 25px; height: 25px;
+            background: radial-gradient(circle at 40% 60%, #b5ead7 60%, #36b37e 100%);
+            box-shadow: 0 0 15px 4px #b5ead744;
+            left: 30vw; top: 10vh;
+            animation-delay: 5s;
+        }
+        @keyframes planet-float {
+            0% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-60px) scale(1.08); }
+            100% { transform: translateY(0) scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated background -->
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-container">
+                <div class="logo">
+                    <img src="images/logo.png" alt="UniVerse Logo" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size: 2rem;\'>🌌</span>'">
+                </div>
+            </div>
+            <h1 class="main-title">UniVerse</h1>
+            <p class="subtitle">Contact UniVerse Team!</p>
+        </div>
+
+        <!-- Team Members -->
+        <div class="team-grid">
+            <div class="team-member">
+                <div class="member-photo">
+                    <img src="images/mohamedkaram.png" alt="Mohamed Karam" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNjAiIGZpbGw9IiM0ZmFjZmUiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjQ1IiByPSIyMCIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0zMCA5NWMwLTE2LjU2OSAxMy40MzEtMzAgMzAtMzBzMzAgMTMuNDMxIDMwIDMwdjEwaC02MHYtMTB6IiBmaWxsPSIjZmZmIi8+PC9zdmc+'">
+                </div>
+                <h3 class="member-name">Mohamed Karam</h3>
+                <p class="member-role">Lead Developer - Overseeing code development, approving changes, and making critical technical decisions.</p>
+                <div class="member-qr">
+                    <img src="images/mohamedkaramqr.png" alt="Mohamed Karam QR" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmYiLz48dGV4dCB4PSI1MCIgeT0iNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzMzMyI+UVIgQ29kZTwvdGV4dD48L3N2Zz4='">
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-photo">
+                    <img src="images/eslamabdin.png" alt="Eslam Abdin" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNjAiIGZpbGw9IiMwMGYyZmUiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjQ1IiByPSIyMCIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0zMCA5NWMwLTE2LjU2OSAxMy40MzEtMzAgMzAtMzBzMzAgMTMuNDMxIDMwIDMwdjEwaC02MHYtMTB6IiBmaWxsPSIjZmZmIi8+PC9zdmc+'">
+                </div>
+                <h3 class="member-name">Eslam Abdin</h3>
+                <p class="member-role">Team Leader - Coordinating efforts, managing stakeholder communication, and tracking project progress.</p>
+                <div class="member-qr">
+                    <img src="images/eslamabdinqr.png" alt="Eslam Abdin QR" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmYiLz48dGV4dCB4PSI1MCIgeT0iNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzMzMyI+UVIgQ29kZTwvdGV4dD48L3N2Zz4='">
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-photo">
+                    <img src="images/mahmoudhussein.png" alt="Mahmoud Hussein" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNjAiIGZpbGw9IiM0ZmFjZmUiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjQ1IiByPSIyMCIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0zMCA5NWMwLTE2LjU2OSAxMy40MzEtMzAgMzAtMzBzMzAgMTMuNDMxIDMwIDMwdjEwaC02MHYtMTB6IiBmaWxsPSIjZmZmIi8+PC9zdmc+'">
+                </div>
+                <h3 class="member-name">Mahmoud Hussein</h3>
+                <p class="member-role">Backend Developer - Crafting server-side logic, and ensuring secure data processing.</p>
+                <div class="member-qr">
+                    <img src="images/mahmoudhusseinqr.png" alt="Mahmoud Hussein QR" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmYiLz48dGV4dCB4PSI1MCIgeT0iNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzMzMyI+UVIgQ29kZTwvdGV4dD48L3N2Zz4='">
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-photo">
+                    <img src="images/basmallamabrouk.png" alt="Basmalla Mabrouk" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNjAiIGZpbGw9IiMwMGYyZmUiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjQ1IiByPSIyMCIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0zMCA5NWMwLTE2LjU2OSAxMy40MzEtMzAgMzAtMzBzMzAgMTMuNDMxIDMwIDMwdjEwaC02MHYtMTB6IiBmaWxsPSIjZmZmIi8+PC9zdmc+'">
+                </div>
+                <h3 class="member-name">Basmalla Mabrouk</h3>
+                <p class="member-role">API Developer - Developing APIs, localization implementation and conducting thorough system testing.</p>
+                <div class="member-qr">
+                    <img src="images/basmallamabroukqr.png" alt="Basmalla Mabrouk QR" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmYiLz48dGV4dCB4PSI1MCIgeT0iNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzMzMyI+UVIgQ29kZTwvdGV4dD48L3N2Zz4='">
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-photo">
+                    <img src="images/ahmedmostafa.png" alt="Ahmed Mostafa" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNjAiIGZpbGw9IiM0ZmFjZmUiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjQ1IiByPSIyMCIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0zMCA5NWMwLTE2LjU2OSAxMy40MzEtMzAgMzAtMzBzMzAgMTMuNDMxIDMwIDMwdjEwaC02MHYtMTB6IiBmaWxsPSIjZmZmIi8+PC9zdmc+'">
+                </div>
+                <h3 class="member-name">Ahmed Mostafa</h3>
+                <p class="member-role">Scheduling Algorithm Developer - Designing and implementing intelligent scheduling algorithms.</p>
+                <div class="member-qr">
+                    <img src="images/ahmedmostafaqr.png" alt="Ahmed Mostafa QR" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmYiLz48dGV4dCB4PSI1MCIgeT0iNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzMzMyI+UVIgQ29kZTwvdGV4dD48L3N2Zz4='">
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-photo">
+                    <img src="images/alhusseinabdulsabour.png" alt="Al-Hussein AbdulSabour" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNjAiIGZpbGw9IiMwMGYyZmUiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjQ1IiByPSIyMCIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0zMCA5NWMwLTE2LjU2OSAxMy40MzEtMzAgMzAtMzBzMzAgMTMuNDMxIDMwIDMwdjEwaC02MHYtMTB6IiBmaWxsPSIjZmZmIi8+PC9zdmc+'">
+                </div>
+                <h3 class="member-name">Al-Hussein AbdulSabour</h3>
+                <p class="member-role">Mobile Developer - Developing the cross-platform mobile application using Flutter and Dart.</p>
+                <div class="member-qr">
+                    <img src="images/alhusseinabdulsabourqr.png" alt="Al-Hussein AbdulSabour QR" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmYiLz48dGV4dCB4PSI1MCIgeT0iNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzMzMyI+UVIgQ29kZTwvdGV4dD48L3N2Zz4='">
+                </div>
+            </div>
+
+            <div class="team-member">
+                <div class="member-photo">
+                    <img src="images/assersamir.png" alt="Asser Sameer" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNjAiIGZpbGw9IiM0ZmFjZmUiLz48Y2lyY2xlIGN4PSI2MCIgY3k9IjQ1IiByPSIyMCIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0zMCA5NWMwLTE2LjU2OSAxMy40MzEtMzAgMzAtMzBzMzAgMTMuNDMxIDMwIDMwdjEwaC02MHYtMTB6IiBmaWxsPSIjZmZmIi8+PC9zdmc+'">
+                </div>
+                <h3 class="member-name">Asser Sameer</h3>
+                <p class="member-role">Web & Multimedia Developer - Developing the university homepage and creating multimedia content.</p>
+                <div class="member-qr">
+                    <img src="images/assersameerqr.png" alt="Asser Sameer QR" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9IiNmZmYiLz48dGV4dCB4PSI1MCIgeT0iNTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzMzMyI+UVIgQ29kZTwvdGV4dD48L3N2Zz4='">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create regular stars
+        // ...existing code...
+
+        // Create floating stars
+        function createFloatingStars() {
+            const container = document.body;
+            const numberOfStars = 40;
+
+            for (let i = 0; i < numberOfStars; i++) {
+                const star = document.createElement('div');
+                star.className = 'floating-star';
+                
+                // Random initial position
+                star.style.left = Math.random() * window.innerWidth + 'px';
+                star.style.top = Math.random() * window.innerHeight + 'px';
+                
+                // Random animation duration and delay
+                const duration = 8 + Math.random() * 18;
+                const delay = Math.random() * -20;
+                star.style.animationDuration = duration + 's';
+                star.style.animationDelay = delay + 's';
+                
+                container.appendChild(star);
+            }
+        }
+
+        // Create planets
+        function createPlanets() {
+            const planets = [
+                { class: 'planet1' },
+                { class: 'planet2' },
+                { class: 'planet3' },
+                { class: 'planet4' }
+            ];
+            planets.forEach(p => {
+                const planet = document.createElement('div');
+                planet.className = 'planet ' + p.class;
+                document.body.appendChild(planet);
+            });
+        }
+
+        // Initialize floating stars and planets
+        createFloatingStars();
+        createPlanets();
+    </script>
+</body>
+</html>
